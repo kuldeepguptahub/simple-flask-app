@@ -1,6 +1,16 @@
-from flask import Flask, request
+from flask import Flask, render_template
+import pymongo
+from dotenv import load_dotenv
+import os
 
+# Setup MongoDB connection
+load_dotenv()
+mongo_uri = os.getenv("MONGO_URI")
+client = pymongo.MongoClient(mongo_uri)
+db = client.get_database('mydatabase')
+collection = db.get_collection('mycollection')
 
+# Initialize Flask app
 app = Flask(__name__)
 @app.route('/api')
 def home():
@@ -8,12 +18,9 @@ def home():
         data = file.read()
     return data
 
-@app.route('/submit_data', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def query_form():
-    if request.method == 'POST':
-        # Handle form submission
-        return "Data submitted successfully!"
-    return "Please submit the form."
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
