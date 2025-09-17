@@ -7,7 +7,6 @@ import os
 load_dotenv()
 mongo_uri = os.getenv('MONGO_URL')
 client = pymongo.MongoClient(mongo_uri)
-
 db = client.contactsdb
 collection = db.contacts
 
@@ -32,7 +31,6 @@ def submit():
         return render_template('submit.html')
     except Exception as e:
         error_message = f"Could not submit form: {str(e)}"
-        # re-render the same form with the error displayed
         return render_template('form.html', error=error_message)
 
 if __name__ == '__main__':
